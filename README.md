@@ -1,6 +1,9 @@
 # Twizy_CanDisplay
 utilizing Arduino components to display CAN vehicle signals on the example of Renault Twizy
 
+![](pics/coast_w_light_accel_s.png)  ![](pics/CanDisplay_desk1_s.png)
+
+
 This project was born on a Friday evening having a beer and thinking about visualizing a few of the Twizy CAN data by using the omnipresent arduino hardware. 
 The first working version took a little longer - mainly to me being unused to designing a display layout with arduino-limitated resources (did you ever do it?).
 However in the end it works quite well. The project sources were adjusted
@@ -21,5 +24,7 @@ Used components:
 you should be able to use an arduino mega as well, it holds double the flash for your fonts etc... pin-compatible, slightly longer PCB. 
 I didn't have one for testing yet.
 The cheap CAN shields come with a hard-wired 120Ohms resistor. This didn't make trouble during my testing. Possibly you want to remove it (unsolder or 'destroy').
+
+Printing (or building) a casing for this CAN display is planed. You have an STL file matching this job (it should be ?
 
 mediate level: checkout yourself options for bigger TFT (up to 3.5" on _AVR_ or going to where the music plays: who is the first for esp8266/32? - but that is like an OVMS display isn't it :D )
