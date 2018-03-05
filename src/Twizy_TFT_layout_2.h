@@ -6,7 +6,7 @@
 void drawStatics(void)
 {
   char msgString[20], conv1[8];                        // Array to store serial string
-  const byte line1yPos = 67;
+  const byte line1yPos = 55;
   const byte line2yPos = 113;
   const byte line3yPos = 240;
   const byte lineThick = 3;
@@ -24,7 +24,7 @@ void drawStatics(void)
   tft.fillRect(65, line2yPos+lineThick, lineThick, (line3yPos-line2yPos-lineThick), GRAY);
 
   /*************** the elements **************/
-  tft.setCursor(0,42);  //reset position after that lines drawing
+  tft.setCursor(0,35);  //reset position after that lines drawing
   tft.setFont(&FreeMonoBold18pt7b);
   dataOnDis.vCurr.xPos = tft.getCursorX(); 
   dataOnDis.vCurr.yPos = tft.getCursorY(); 
@@ -39,14 +39,26 @@ void drawStatics(void)
   printmsgBW(  " ---A", WHITE );   
 
 
-  tft.println();
-  tft.setFont(&FreeMonoBold9pt7b); tft.println();
+  tft.setFont(&FreeMonoBold9pt7b);
+  tft.setCursor(0,80);
+  printmsgBW( "Max ", CYAN );                             // Serial.print(tft.getCursorY());Serial.print( " ");
+  dataOnDis.pMaxDrive.xPos = tft.getCursorX();
+  dataOnDis.pMaxDrive.yPos = tft.getCursorY();
+  dataOnDis.pMaxDrive.disCol = CYAN;
+  dataOnDis.pMaxDrive.font = &FreeMonoBold9pt7b; 
+  dataOnDis.pMaxDrive.disLen = 4;  dataOnDis.pMaxDrive.disPres = 1;
+  printmsgBW( "--.-", CYAN );                           //Serial.println(tft.getCursorX());
+  
+  tft.setCursor(0,100); 
+  printmsgBW( "Min ", GREEN );
   dataOnDis.pMaxRecup.xPos = tft.getCursorX();
   dataOnDis.pMaxRecup.yPos = tft.getCursorY();
   dataOnDis.pMaxRecup.disCol = GREEN;
   dataOnDis.pMaxRecup.font = &FreeMonoBold9pt7b; 
   dataOnDis.pMaxRecup.disLen = 4;  dataOnDis.pMaxRecup.disPres = 1;
-  printmsgBW( " -.-  ", GREEN );
+  printmsgBW( " -.-", GREEN );
+  
+  tft.setCursor(tft.getCursorX()+30,95);
   dataOnDis.pCurr.xPos = tft.getCursorX();
   dataOnDis.pCurr.yPos = tft.getCursorY();
   dataOnDis.pCurr.disCol = WHITE;
@@ -54,12 +66,6 @@ void drawStatics(void)
   dataOnDis.pCurr.disLen = 4;  dataOnDis.pCurr.disPres = 1;
   tft.setFont(&FreeMonoBold18pt7b);  printmsgBW( "--.-", WHITE );
   tft.setFont(&FreeMonoBold9pt7b);  printmsgBW( "kW ", WHITE );
-  dataOnDis.pMaxDrive.xPos = tft.getCursorX();
-  dataOnDis.pMaxDrive.yPos = tft.getCursorY();
-  dataOnDis.pMaxDrive.disCol = CYAN;
-  dataOnDis.pMaxDrive.font = &FreeMonoBold9pt7b; 
-  dataOnDis.pMaxDrive.disLen = 4;  dataOnDis.pMaxDrive.disPres = 1;
-  printmsgBW( "--.-", CYAN );
   tft.println();  tft.println();  tft.println();
 
   

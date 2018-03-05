@@ -45,7 +45,7 @@
 #define LCD_RESET A4 // Can alternately just connect to Arduino's reset pin
 
 #include <SPI.h>          // f.k. for Arduino-1.5.2
-#include "Adafruit_GFX.h"// Hardware-specific library
+#include "Adafruit_GFX.h"// Hardware-specific library; use Twizy_CANdisplay version!
 #include <MCUFRIEND_kbv.h>
 #include <Fonts\FreeMonoBold9pt7b.h>
 //#include <Fonts\FreeMonoBold12pt7b.h>
@@ -72,8 +72,16 @@ byte tftClockRang = true;
 //few defines used, so include is 'late', Arduino IDE ...
 #include "Twizy_TFT_methods.h"
 
+
+/*******************************************************************/
 /******** exchange this header file for different layout ***********/
-#include "Twizy_TFT_layout_1.h"
+/*******************************************************************/
+
+//#include "Twizy_TFT_layout_1.h"
+#include "Twizy_TFT_layout_2.h"
+
+/*******************************************************************/
+/*******************************************************************/
 /*******************************************************************/
 
 
@@ -97,8 +105,8 @@ void checkTftRedraws(void)
 //  }
   
   /*********** ID424 ******************/
-  if (dataOnDis.pMaxRecup.value != (id424.data.actMaxCharge/2.0f) )  {
-     dataOnDis.pMaxRecup.value = (id424.data.actMaxCharge/2.0f);
+  if (dataOnDis.pMaxRecup.value != (id424.data.actMaxCharge/-2.0f) )  {
+     dataOnDis.pMaxRecup.value = (id424.data.actMaxCharge/-2.0f);
      dataOnDis.pMaxRecup.updte = true;
   }
   if (dataOnDis.pMaxDrive.value != (id424.data.actMaxDischarge/2.0f) )  {
@@ -250,6 +258,8 @@ void loop()
       id55F.isNew = true;
     }
   }
+
+
   
   if(tftClockRang)
   { 
@@ -258,7 +268,6 @@ void loop()
     reDraw();
   }
 }
-
 
 
 
