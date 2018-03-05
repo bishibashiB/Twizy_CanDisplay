@@ -1,7 +1,7 @@
 # Twizy_CanDisplay
 utilizing Arduino components to display CAN vehicle signals on the example of Renault Twizy
 
-![](pics/coast_w_light_accel_s.png)  ![](pics/CanDisplay_desk1_s.png)
+![inUsePic](pics/coast_w_light_accel_s.png)  ![componentPic](pics/CanDisplay_desk1_s.png)
 
 
 This project was born on a Friday evening having a beer and thinking about visualizing a few of the Twizy CAN data by using the omnipresent arduino hardware. 

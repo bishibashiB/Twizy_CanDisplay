@@ -100,7 +100,7 @@ typedef struct
   struct{
   long B0_3;
   byte B4;
-  byte tMot;
+  byte tInv;
   byte B6;
   byte B7;
  } data;

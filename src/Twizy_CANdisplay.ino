@@ -35,7 +35,6 @@
  */
 
 #include <mcp_can.h>
-#include "Twizy_CAN_defs_types.h"
 #include <SPI.h>
 
 //TFT stuff
@@ -46,11 +45,13 @@
 #define LCD_RESET A4 // Can alternately just connect to Arduino's reset pin
 
 #include <SPI.h>          // f.k. for Arduino-1.5.2
-#include "Adafruit_GFX.h"// Hardware-specific library
+#include "Adafruit_GFX.h"// Hardware-specific library; use Twizy_CANdisplay version!
 #include <MCUFRIEND_kbv.h>
 #include <Fonts\FreeMonoBold9pt7b.h>
 //#include <Fonts\FreeMonoBold12pt7b.h>
 #include <Fonts\FreeMonoBold18pt7b.h>
+#include "Twizy_CAN_defs_types.h"
+#include "Twizy_TFT_defs_types.h"
 
 #include <TimerOne.h>
 // draw update 1s
@@ -61,58 +62,28 @@ MCUFRIEND_kbv tft;
 //Adafruit_TFTLCD tft(LCD_CS, LCD_CD, LCD_WR, LCD_RD, LCD_RESET);
 
 
-//colors eg. from https://ee-programming-notepad.blogspot.de/2016/10/16-bit-color-generator-picker.html
-
-
-#ifndef min
-#define min(a, b) (((a) < (b)) ? (a) : (b))
-#endif
-
-
 #define CAN0_INT 2                              // Set INT to pin 2
 MCP_CAN CAN_Instance(10);                       // Set CS to pin 10
 
-unsigned long lastLoopMillis = 0;
 byte tftClockRang = true;
-const byte fontSizeInc = 42;
-byte blinky;
 
-typedef struct
-{
-  float value;
-  byte updte;
-  //from here only init values
-  byte disLen;  //string conversion rules
-  byte disPres; //string conversion rules
-  byte offset;  //twizyCAN TODO
-  float factor; //twizyCAN TODO
-  word xPos;
-  word yPos;
-  const GFXfont* font;
-  word disCol;    
-} disEl_t;
+#define SHOW_MS_PER_FRAME //adds a last line on the display showing a frame update time in ms
 
-typedef struct 
-{
-  disEl_t vCurr;    //F:  0.2V, O:
-  disEl_t iCurr;    //F: 0.25A, O:-500
-  disEl_t pMaxRecup;//F: 500W, O:
-  disEl_t pCurr;    //F:    -, O:
-  disEl_t pMaxDrive;//F: 500W, O:
-  disEl_t tBatt;     //F:   1, O:-40
-  disEl_t tChg;      //F:   1, O: -40
-  disEl_t tMot;      //F:   1, O: -40
-  disEl_t SOC;       //F:0.0025%, O:
-  disEl_t SOH;       //F:    1, O: 
-} tftData_t;
-tftData_t dataOnDis;
-
-//few defines used, so include is 'late'
+//few defines used, so include is 'late', Arduino IDE ...
 #include "Twizy_TFT_methods.h"
 
 
-void printmsgBW(const char *msg, unsigned int col);
-void reDraw(void);
+/*******************************************************************/
+/******** exchange this header file for different layout ***********/
+/*******************************************************************/
+
+//#include "Twizy_TFT_layout_1.h"
+#include "Twizy_TFT_layout_2.h"
+
+/*******************************************************************/
+/*******************************************************************/
+/*******************************************************************/
+
 
 void tftClockISR() {
   tftClockRang = true;
@@ -134,8 +105,8 @@ void checkTftRedraws(void)
 //  }
   
   /*********** ID424 ******************/
-  if (dataOnDis.pMaxRecup.value != (id424.data.actMaxCharge/2.0f) )  {
-     dataOnDis.pMaxRecup.value = (id424.data.actMaxCharge/2.0f);
+  if (dataOnDis.pMaxRecup.value != (id424.data.actMaxCharge/-2.0f) )  {
+     dataOnDis.pMaxRecup.value = (id424.data.actMaxCharge/-2.0f);
      dataOnDis.pMaxRecup.updte = true;
   }
   if (dataOnDis.pMaxDrive.value != (id424.data.actMaxDischarge/2.0f) )  {
@@ -172,9 +143,9 @@ void checkTftRedraws(void)
      dataOnDis.tChg.updte = true;
   }
   /*********** ID59E ******************/
-  if (dataOnDis.tMot.value != (id59E.data.tMot -40) )  {
-     dataOnDis.tMot.value = (id59E.data.tMot -40);
-     dataOnDis.tMot.updte = true;
+  if (dataOnDis.tInv.value != (id59E.data.tInv -40) )  {
+     dataOnDis.tInv.value = (id59E.data.tInv -40);
+     dataOnDis.tInv.updte = true;
   }
   /*********** ID55F ******************/
   endianHelpi = ((id55F.data.B6 & 0xF) <<8) + id55F.data.B7; 
@@ -215,7 +186,7 @@ void setup()
   //init values (formulas with offset)
   dataOnDis.tBatt.value = -40;
   dataOnDis.tChg.value = -40;
-  dataOnDis.tMot.value = -40;
+  dataOnDis.tInv.value = -40;
   dataOnDis.iCurr.value = 500;
  
   drawStatics();
@@ -287,6 +258,8 @@ void loop()
       id55F.isNew = true;
     }
   }
+
+
   
   if(tftClockRang)
   { 
