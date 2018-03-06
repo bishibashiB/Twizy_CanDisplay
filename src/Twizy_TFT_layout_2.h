@@ -69,15 +69,15 @@ void drawStatics(void)
   tft.println();  tft.println();  tft.println();
 
   
-  printmsgBW( " BATT", WHITE );
+    printmsgBW( " BATT", WHITE );
   tft.setFont(&FreeMonoBold18pt7b);
   tft.setCursor(75,tft.getCursorY());
   dataOnDis.tBatt.xPos = tft.getCursorX();
   dataOnDis.tBatt.yPos = tft.getCursorY();
   dataOnDis.tBatt.disCol = CYAN;
   dataOnDis.tBatt.font = &FreeMonoBold18pt7b; 
-  dataOnDis.tBatt.disLen = 5;  dataOnDis.tBatt.disPres = 1;
-  printmsgBW( "---.-", CYAN );
+  dataOnDis.tBatt.disLen = 3;  dataOnDis.tBatt.disPres = 0;
+  printmsgBW( "---", CYAN );
   tft.setFont(&FreeMonoBold9pt7b);
   printmsgBW( "deg", WHITE );
   tft.println();  tft.println();
@@ -89,8 +89,8 @@ void drawStatics(void)
   dataOnDis.tChg.yPos = tft.getCursorY();
   dataOnDis.tChg.disCol = GREEN;
   dataOnDis.tChg.font = &FreeMonoBold18pt7b; 
-  dataOnDis.tChg.disLen = 5;  dataOnDis.tChg.disPres = 1;
-  printmsgBW( "---.-", GREEN );
+  dataOnDis.tChg.disLen = 3;  dataOnDis.tChg.disPres = 0;
+  printmsgBW( "---", GREEN );
   tft.setFont(&FreeMonoBold9pt7b);
   printmsgBW( "deg", WHITE );
   tft.println();  tft.println();
@@ -98,12 +98,12 @@ void drawStatics(void)
   printmsgBW( " INV", WHITE );
   tft.setCursor(75,tft.getCursorY());
   tft.setFont(&FreeMonoBold18pt7b);
-  dataOnDis.tMot.xPos = tft.getCursorX();
-  dataOnDis.tMot.yPos = tft.getCursorY();
-  dataOnDis.tMot.disCol = ORANGE;
-  dataOnDis.tMot.font = &FreeMonoBold18pt7b; 
-  dataOnDis.tMot.disLen = 5;  dataOnDis.tMot.disPres = 1;
-  printmsgBW( "---.-", ORANGE );
+  dataOnDis.tInv.xPos = tft.getCursorX();
+  dataOnDis.tInv.yPos = tft.getCursorY();
+  dataOnDis.tInv.disCol = ORANGE;
+  dataOnDis.tInv.font = &FreeMonoBold18pt7b; 
+  dataOnDis.tInv.disLen = 3;  dataOnDis.tInv.disPres = 0;
+  printmsgBW( "---", ORANGE );
   tft.setFont(&FreeMonoBold9pt7b);
   printmsgBW( "deg", WHITE );
   tft.println();  tft.println(); tft.println();

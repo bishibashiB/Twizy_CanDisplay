@@ -182,6 +182,7 @@ void setup()
   //tft.invertDisplay(true); this is pixel base
   tft.setRotation(2); //0-3
   tft.fillScreen(BLACK);
+  tft.setCustomFontToGrid(true); //this function will only be found in the project version of adafruit gfx lib
 
   //init values (formulas with offset)
   dataOnDis.tBatt.value = -40;
@@ -207,8 +208,6 @@ void loop()
     //Serial.print(msgString);
 
     if(rxId == 0x424){
-      //sprintf(msgString, " 0x%.2X", rxBuf[i]);
-      //Serial.print(msgString);
       for(byte i = 0; i<len; i++){
         ((char*)&id424.data)[i] = rxBuf[i];
       }
