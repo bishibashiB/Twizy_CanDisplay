@@ -13,6 +13,13 @@ void printmsgBW(const char *msg, unsigned int col)
     tft.print(msg);
 }
 
+void storePos_setFont(disEl_t* El, GFXfont *f) {
+  //save a little flash by automating this (1%); and yes, there is some overhead in processing
+  El->xPos = tft.getCursorX(); 
+  El->yPos = tft.getCursorY(); 
+  El->font = f; 
+  tft.setFont(f);
+}
 
 void reDrawEl (disEl_t* El)
 {
@@ -22,7 +29,9 @@ void reDrawEl (disEl_t* El)
       
       tft.setFont(El->font);
       dtostrf(El->value, El->disLen, El->disPres, conv1);
-      if (El->disLen == 3) {                //need this to get numbers right-alligned w/ fixed length
+      if (El->disLen == 2) {                //need this to get numbers right-alligned w/ fixed length
+        sprintf(conv1Formated,"%2s", conv1);      
+      } else if (El->disLen == 3) {                
         sprintf(conv1Formated,"%3s", conv1);      
       } else if (El->disLen == 4) {
         sprintf(conv1Formated,"%4s", conv1);      
@@ -45,12 +54,38 @@ void reDraw(void)
   tstart = millis();
 #endif
 
+  //colors oh colors
   if (dataOnDis.pCurr.value >= 0.0) {
     dataOnDis.pCurr.disCol = WHITE;
   }else {
     dataOnDis.pCurr.disCol = GREEN;
   }
-  
+
+  if (dataOnDis.tMot.value >= 100.0) {
+    dataOnDis.tMot.disCol = ORANGE;
+  }else {
+    dataOnDis.tMot.disCol = WHITE;
+  }
+  if (dataOnDis.tBatt.value < 5.0) {
+    dataOnDis.tBatt.disCol = BLUE;
+  }else if (dataOnDis.tBatt.value < 15.0) {
+    dataOnDis.tBatt.disCol = WHITE;
+  }else if (dataOnDis.tBatt.value < 30.0) {
+    dataOnDis.tBatt.disCol = GREEN;
+  }else {
+    dataOnDis.tBatt.disCol = RED;
+  }
+  if (dataOnDis.tInv.value > 50.0) {
+    dataOnDis.tInv.disCol = ORANGE;
+  }else {
+    dataOnDis.tInv.disCol = WHITE;
+  }
+  if (dataOnDis.tChg.value > 50.0) {
+    dataOnDis.tChg.disCol = ORANGE;
+  }else {
+    dataOnDis.tChg.disCol = WHITE;
+  }
+
   for(k=0; k<(sizeof(dataOnDis)/sizeof(disEl_t)); k++) {
       reDrawEl( &((disEl_t*)&dataOnDis)[k] );
   }

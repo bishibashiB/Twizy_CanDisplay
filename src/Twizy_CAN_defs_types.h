@@ -69,8 +69,8 @@ typedef struct
 //  word engTorque :9; //!Endianness!
 //  word B5_bit7   :7;
   byte B4;
-  byte B5;
   byte tMot;
+  byte B6;
   byte B7;
  } data;
   word Id;
@@ -124,7 +124,7 @@ typedef struct
   byte DLC;
   byte cycleTime; //10ms/bit
   byte isNew;
-} t_BMS_Id55F;  //sample data 00 00 10 FB D4 3D 00 00
+} t_BMS_Id55F;  //sample data FF FF 73 00 00 24 12 41
 t_BMS_Id55F id55F = {{0,0,0,0,0},0x55F, 8, 100, 0};
 
 #endif // _Twizy_CAN_defs_types_h

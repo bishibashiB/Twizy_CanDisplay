@@ -62,7 +62,7 @@ MCUFRIEND_kbv tft;
 //Adafruit_TFTLCD tft(LCD_CS, LCD_CD, LCD_WR, LCD_RD, LCD_RESET);
 
 
-#define CAN0_INT 2                              // Set INT to pin 2
+//#define CAN0_INT 2                              // Set INT to pin 2
 MCP_CAN CAN_Instance(10);                       // Set CS to pin 10
 
 byte tftClockRang = true;
@@ -94,15 +94,11 @@ void checkTftRedraws(void)
   int cellTempAvg;
   word endianHelpi;
   
-  /*********** ID425 ******************/
-  //this voltage is not the prefered one
-//  endianHelpi = ((id425.data.B6 & 0x3F) <<8) + id425.data.B7;
-//  if (dataOnDis.vCurr.value != (endianHelpi/5.0f) )  {
-//     dataOnDis.vCurr.value = (endianHelpi/5.0f);
-//     dataOnDis.vCurr.updte = true;
-//     dataOnDis.pCurr.value = (dataOnDis.vCurr.value * dataOnDis.iCurr.value)/1000;
-//     dataOnDis.pCurr.updte = true;
-//  }
+  /*********** ID196 ******************/
+  if (dataOnDis.tMot.value != (id196.data.tMot -40) )  {
+     dataOnDis.tMot.value = (id196.data.tMot -40);
+     dataOnDis.tMot.updte = true;
+  }
   
   /*********** ID424 ******************/
   if (dataOnDis.pMaxRecup.value != (id424.data.actMaxCharge/-2.0f) )  {
@@ -170,7 +166,7 @@ void setup()
   
   CAN_Instance.setMode(MCP_NORMAL);                     // Set operation mode to normal so the MCP2515 sends acks to received data.
 
-  pinMode(CAN0_INT, INPUT);                            // Configuring pin for /INT input
+  //pinMode(CAN0_INT, INPUT);                            // Configuring pin for /INT input
 
 
   /************** TFT stuff *************/
@@ -182,12 +178,13 @@ void setup()
   //tft.invertDisplay(true); this is pixel base
   tft.setRotation(2); //0-3
   tft.fillScreen(BLACK);
-  tft.setCustomFontToGrid(true); //this function will only be found in the project version of adafruit gfx lib
-
+  tft.setCustomFontToGrid(true); //this function will only be found in the CanDisplay version of adafruit gfx lib
+  
   //init values (formulas with offset)
   dataOnDis.tBatt.value = -40;
   dataOnDis.tChg.value = -40;
   dataOnDis.tInv.value = -40;
+  dataOnDis.tMot.value = -40;
   dataOnDis.iCurr.value = 500;
  
   drawStatics();
@@ -196,16 +193,13 @@ void setup()
 void loop()
 {
 
-  if(!digitalRead(CAN0_INT))                         // If CAN0_INT pin is low, read receive buffer
+  if(CAN_Instance.checkReceive() == CAN_MSGAVAIL)                        // If CAN0_INT pin is low, read receive buffer
   {
     long unsigned int rxId;
     unsigned char len = 0;
     unsigned char rxBuf[8];
 
     CAN_Instance.readMsgBuf(&rxId, &len, rxBuf);      // Read data: len = data length, buf = data byte(s)
-
-    //sprintf(msgString, "Standard ID: 0x%.3lX       DLC: %1d  Data:", rxId, len);
-    //Serial.print(msgString);
 
     if(rxId == 0x424){
       for(byte i = 0; i<len; i++){
@@ -259,7 +253,7 @@ void loop()
   }
 
 
-  
+    
   if(tftClockRang)
   { 
     tftClockRang = false;
