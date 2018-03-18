@@ -46,11 +46,10 @@ void reDrawEl (disEl_t* El)
 
 void reDraw(void)
 {
-  unsigned long tstart, tend;
-  char msgString[20], conv1[8];                        // Array to store serial string
   int k;
 
 #ifdef SHOW_MS_PER_FRAME
+  unsigned long tstart, tend;
   tstart = millis();
 #endif
 
@@ -94,17 +93,25 @@ void reDraw(void)
 #ifdef SHOW_MS_PER_FRAME
   tend = millis();
 
-  tft.setFont(&FreeMonoBold9pt7b);
+//  tft.setFont(&FreeMonoBold9pt7b);
+  tft.setFont(NULL);
   tft.setCursor( 0, 305);
+  
+  {
+    char msgString[40];                        // Array to store serial string
 
-  if(blinky == true) {
-    blinky = false;
-    sprintf(msgString, " took:%4ums_", tend - tstart);
-  } else {
-    blinky = true;
-    sprintf(msgString, " took:%4ums ", tend - tstart);
+    if(blinky == true) {
+      blinky = false;
+      sprintf(&msgString[0], " took:%4ums_", tend - tstart);
+//      sprintf(&msgString[13], " fps: %s", fpsStr);
+    } else {
+      blinky = true;
+      sprintf(&msgString[0], " took:%4ums ", tend - tstart);
+//      sprintf(&msgString[13], " fps: %s", fpsStr);
+    }
+    printmsgBW( msgString, WHITE );
+  
   }
-  printmsgBW( msgString, WHITE );
 #endif
 }
 

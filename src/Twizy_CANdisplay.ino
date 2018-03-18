@@ -35,7 +35,6 @@
  */
 
 #include <mcp_can.h>
-#include <SPI.h>
 
 //TFT stuff
 #define LCD_CS A3 // Chip Select 
@@ -54,8 +53,14 @@
 #include "Twizy_TFT_defs_types.h"
 
 #include <TimerOne.h>
-// draw update 1s
-#define TFT_UPDATE_US        1000000
+// draw update (555ms), try using a non-devider of CAN frame cycle times -> otherwise could end up in regularly missing certain frames.
+#define TFT_UPDATE_US        555000
+
+byte tftClockRang = true;
+char fpsStr[4];
+
+#define SHOW_MS_PER_FRAME //adds a last line on the display showing a frame update time in ms
+
 
 MCUFRIEND_kbv tft;
 //#include <Adafruit_TFTLCD.h>
@@ -64,10 +69,6 @@ MCUFRIEND_kbv tft;
 
 //#define CAN0_INT 2                              // Set INT to pin 2
 MCP_CAN CAN_Instance(10);                       // Set CS to pin 10
-
-byte tftClockRang = true;
-
-#define SHOW_MS_PER_FRAME //adds a last line on the display showing a frame update time in ms
 
 //few defines used, so include is 'late', Arduino IDE ...
 #include "Twizy_TFT_methods.h"
@@ -179,7 +180,9 @@ void setup()
   tft.setRotation(2); //0-3
   tft.fillScreen(BLACK);
   tft.setCustomFontToGrid(true); //this function will only be found in the CanDisplay version of adafruit gfx lib
-  
+
+  dtostrf(1000000.0/TFT_UPDATE_US, 3, 1, fpsStr);
+
   //init values (formulas with offset)
   dataOnDis.tBatt.value = -40;
   dataOnDis.tChg.value = -40;
@@ -261,6 +264,7 @@ void loop()
     reDraw();
   }
 }
+
 
 
 
