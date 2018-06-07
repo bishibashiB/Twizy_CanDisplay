@@ -255,7 +255,24 @@ void loop()
     }
   }
 
-
+//  if (id155.isNew != true) {
+//  ((byte*)(&id155.data))[1]= 0x97; //07 97 D0 54 41 A0 00 73
+//  ((byte*)(&id155.data))[2]= 0xD0; 
+//  ((byte*)(&id155.data))[3]= 0x54; 
+//  ((byte*)(&id155.data))[4]= 0x41; 
+//  ((byte*)(&id155.data))[5]= 0xA0; 
+//  id155.isNew = true;}
+//  if (id425.isNew != true) {
+//  ((byte*)(&id425.data))[4]= 0xFE; //2A 3C 44 FF FE 70 01 07
+//  ((byte*)(&id425.data))[5]= 0x70; 
+//  ((byte*)(&id425.data))[6]= 0x01; 
+//  ((byte*)(&id425.data))[7]= 0x07; 
+//  id425.isNew = true; }
+//
+//  if (id55F.isNew != true) {
+//  ((byte*)(&id55F.data))[6]= 0x12; //FF FF 73 00 00 24 12 41
+//  ((byte*)(&id55F.data))[7]= 0x41; 
+//  id55F.isNew = true; }
     
   if(tftClockRang)
   { 
