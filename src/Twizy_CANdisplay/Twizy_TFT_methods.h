@@ -13,7 +13,7 @@ void printmsgBW(const char *msg, unsigned int col)
     tft.print(msg);
 }
 
-void storePos_setFont(disEl_t* El, GFXfont *f) {
+void storePos_setFont(disEl_t* El, const GFXfont *f) {
   //save a little flash by automating this (1%); and yes, there is some overhead in processing
   El->xPos = tft.getCursorX(); 
   El->yPos = tft.getCursorY(); 

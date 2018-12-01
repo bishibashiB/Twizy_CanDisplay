@@ -111,11 +111,11 @@ void drawStatics(void)
   printmsgBW( "--.--", YELLOW );
   tft.setFont(&FreeMonoBold9pt7b);
   printmsgBW( "% ", WHITE );
-//  printmsgBW( "SOH ", BLUE );
-//  storePos_setFont(&dataOnDis.SOH, &FreeMonoBold9pt7b);
-//  dataOnDis.SOH.disCol = BLUE; 
-//  dataOnDis.SOH.disLen = 3;  dataOnDis.SOH.disPres = 0;
-//  printmsgBW( " --%", BLUE );
+  printmsgBW( "SOH ", BLUE );
+  storePos_setFont(&dataOnDis.SOH, &FreeMonoBold9pt7b);
+  dataOnDis.SOH.disCol = BLUE; 
+  dataOnDis.SOH.disLen = 3;  dataOnDis.SOH.disPres = 0;
+  printmsgBW( " --%", BLUE );
 }
 
 

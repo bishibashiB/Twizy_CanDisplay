@@ -15,7 +15,7 @@ typedef struct
     byte B6;
     byte B7;
   } data;
-  byte Id;
+  word Id;
   byte DLC;
   byte cycleTime; //10ms/bit
   byte isNew;
@@ -33,7 +33,7 @@ typedef struct
   byte B6;
   byte cellTempMax;
   } data;
-  byte Id;
+  word Id;
   byte DLC;
   byte cycleTime; //10ms/bit
   byte isNew;

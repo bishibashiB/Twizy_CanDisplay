@@ -35,6 +35,7 @@
  */
 
 #include <mcp_can.h>
+//#include <avr/dtostrf.h>
 
 //TFT stuff
 #define LCD_CS A3 // Chip Select 
@@ -171,9 +172,9 @@ void setup()
 
 
   /************** TFT stuff *************/
-  Timer1.initialize(TFT_UPDATE_US);
-  Timer1.attachInterrupt(tftClockISR);
-
+  //Timer1.initialize(TFT_UPDATE_US);
+  //Timer1.attachInterrupt(tftClockISR);
+Timer1.attachInterrupt(tftClockISR);
   uint16_t ID = tft.readID(); 
   tft.begin(ID);
   //tft.invertDisplay(true); this is pixel base
