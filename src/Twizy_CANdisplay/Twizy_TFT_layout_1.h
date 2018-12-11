@@ -2,29 +2,28 @@
 #ifndef _Twizy_TFT_layout_h
 #define _Twizy_TFT_layout_h
 
-
 void drawStatics(void)
 {
   char msgString[20], conv1[8];                        // Array to store serial string
-  const byte line1yPos = 67;
-  const byte line2yPos = 113;
-  const byte line3yPos = 240;
-  const byte lineThick = 3;
+  const long line1yPos = SetRel2AbsHeigth(18);
+  const long line2yPos = SetRel2AbsHeigth(33);
+  const long line3yPos = SetRel2AbsHeigth(75);
+  const long lineThickPxl = 3;
  
   /*************** the lines **************/
-  tft.fillRect(0, line1yPos,           240, lineThick, WHITE); 
-  tft.fillRect(0, line1yPos+lineThick, 240, lineThick, GRAY); 
+  tft.fillRect(0, line1yPos,              tft.width(), lineThickPxl, WHITE); 
+  tft.fillRect(0, line1yPos+lineThickPxl, tft.width(), lineThickPxl, GRAY); 
 
-  tft.fillRect(0, line2yPos,           240, lineThick, WHITE); 
-  tft.fillRect(0, line2yPos+lineThick, 240, lineThick, GRAY); 
+  tft.fillRect(0, line2yPos,              tft.width(), lineThickPxl, WHITE); 
+  tft.fillRect(0, line2yPos+lineThickPxl, tft.width(), lineThickPxl, GRAY); 
 
-  tft.fillRect(0, line3yPos,           240, lineThick, WHITE); 
-  tft.fillRect(0, line3yPos+lineThick, 240, lineThick, GRAY); 
+  tft.fillRect(0, line3yPos,              tft.width(), lineThickPxl, WHITE); 
+  tft.fillRect(0, line3yPos+lineThickPxl, tft.width(), lineThickPxl, GRAY); 
 
-  tft.fillRect(65, line2yPos+lineThick, lineThick, (line3yPos-line2yPos-lineThick), GRAY);
+  tft.fillRect(SetRel2AbsWidth(27), line2yPos+lineThickPxl, lineThickPxl, (line3yPos-line2yPos-lineThickPxl), GRAY);
 
   /*************** the elements **************/
-  tft.setCursor(0,42);  //reset position after that lines drawing
+  tft.setCursor(SetRel2AbsWidth(4),SetRel2AbsHeigth(13));  //reset position after that lines drawing
   tft.setFont(&FreeMonoBold18pt7b);
   dataOnDis.vCurr.xPos = tft.getCursorX(); 
   dataOnDis.vCurr.yPos = tft.getCursorY(); 
@@ -39,7 +38,7 @@ void drawStatics(void)
   printmsgBW(  " ---A", WHITE );   
 
 
-  tft.println();
+  tft.setCursor(SetRel2AbsHeigth(8),SetRel2AbsHeigth(24));
   tft.setFont(&FreeMonoBold9pt7b); tft.println();
   dataOnDis.pMaxRecup.xPos = tft.getCursorX();
   dataOnDis.pMaxRecup.yPos = tft.getCursorY();
@@ -60,12 +59,12 @@ void drawStatics(void)
   dataOnDis.pMaxDrive.font = &FreeMonoBold9pt7b; 
   dataOnDis.pMaxDrive.disLen = 4;  dataOnDis.pMaxDrive.disPres = 1;
   printmsgBW( "--.-", CYAN );
-  tft.println();  tft.println();  tft.println();
+  tft.setCursor(0,tft.getCursorY() + SetRel2AbsHeigth(15));
 
   
   printmsgBW( " BATT", WHITE );
   tft.setFont(&FreeMonoBold18pt7b);
-  tft.setCursor(75,tft.getCursorY());
+  tft.setCursor(SetRel2AbsWidth(31),tft.getCursorY());
   dataOnDis.tBatt.xPos = tft.getCursorX();
   dataOnDis.tBatt.yPos = tft.getCursorY();
   dataOnDis.tBatt.disCol = CYAN;
@@ -74,11 +73,11 @@ void drawStatics(void)
   printmsgBW( "---", CYAN );
   tft.setFont(&FreeMonoBold9pt7b);
   printmsgBW( "deg", WHITE );
-  tft.println();  tft.println();
+  tft.setCursor(0,tft.getCursorY() + SetRel2AbsHeigth(10));
     
   printmsgBW( " CHG", WHITE );
   tft.setFont(&FreeMonoBold18pt7b);
-  tft.setCursor(75,tft.getCursorY());
+  tft.setCursor(SetRel2AbsWidth(31),tft.getCursorY());
   dataOnDis.tChg.xPos = tft.getCursorX();
   dataOnDis.tChg.yPos = tft.getCursorY();
   dataOnDis.tChg.disCol = GREEN;
@@ -87,10 +86,10 @@ void drawStatics(void)
   printmsgBW( "---", GREEN );
   tft.setFont(&FreeMonoBold9pt7b);
   printmsgBW( "deg", WHITE );
-  tft.println();  tft.println();
+  tft.setCursor(0,tft.getCursorY() + SetRel2AbsHeigth(10));
 
   printmsgBW( " INV", WHITE );
-  tft.setCursor(75,tft.getCursorY());
+  tft.setCursor(SetRel2AbsWidth(31),tft.getCursorY());
   tft.setFont(&FreeMonoBold18pt7b);
   dataOnDis.tInv.xPos = tft.getCursorX();
   dataOnDis.tInv.yPos = tft.getCursorY();
@@ -100,11 +99,11 @@ void drawStatics(void)
   printmsgBW( "---", ORANGE );
   tft.setFont(&FreeMonoBold9pt7b);
   printmsgBW( "deg", WHITE );
-  tft.println();  tft.println(); tft.println();
+  tft.setCursor(0,tft.getCursorY() + SetRel2AbsHeigth(20));
 
 
   printmsgBW( " SOC ", WHITE );
-  //tft.setCursor(75,tft.getCursorY());
+  //tft.setCursor(SetRel2AbsWidth(31),tft.getCursorY());
   //tft.setFont(&FreeMonoBold18pt7b);
   dataOnDis.SOC.xPos = tft.getCursorX();
   dataOnDis.SOC.yPos = tft.getCursorY();

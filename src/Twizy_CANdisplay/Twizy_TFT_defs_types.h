@@ -9,7 +9,7 @@
 #define RED     0xF800
 #define GREEN   0x07E0
 #define CYAN    0x07FF
-#define PINK    0xF81F
+//#define PINK    0xF81F
 #define YELLOW  0xFFE0
 #define WHITE   0xFFFF
 #define ORANGE  0xFE52

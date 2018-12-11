@@ -1,7 +1,8 @@
 #ifndef _Twizy_TFT_methods_h
 #define _Twizy_TFT_methods_h
 
-
+#define SetRel2AbsWidth(x)  (((long)x)* (long)tft.width() /100u)
+#define SetRel2AbsHeigth(y) (((long)y)* (long)tft.height()/100u)
 
 #ifdef SHOW_MS_PER_FRAME
 byte blinky;
@@ -93,9 +94,8 @@ void reDraw(void)
 #ifdef SHOW_MS_PER_FRAME
   tend = millis();
 
-//  tft.setFont(&FreeMonoBold9pt7b);
   tft.setFont(NULL);
-  tft.setCursor( 0, 305);
+  tft.setCursor( SetRel2AbsWidth(4), SetRel2AbsHeigth(95));
   
   {
     char msgString[40];                        // Array to store serial string
@@ -103,11 +103,9 @@ void reDraw(void)
     if(blinky == true) {
       blinky = false;
       sprintf(&msgString[0], " took:%4ums_", tend - tstart);
-//      sprintf(&msgString[13], " fps: %s", fpsStr);
     } else {
       blinky = true;
       sprintf(&msgString[0], " took:%4ums ", tend - tstart);
-//      sprintf(&msgString[13], " fps: %s", fpsStr);
     }
     printmsgBW( msgString, WHITE );
   

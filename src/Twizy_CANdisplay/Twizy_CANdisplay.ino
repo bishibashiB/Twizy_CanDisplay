@@ -48,7 +48,6 @@
 #include "Adafruit_GFX.h"// Hardware-specific library; use Twizy_CANdisplay version!
 #include <MCUFRIEND_kbv.h>
 #include <Fonts\FreeMonoBold9pt7b.h>
-//#include <Fonts\FreeMonoBold12pt7b.h>
 #include <Fonts\FreeMonoBold18pt7b.h>
 #include "Twizy_CAN_defs_types.h"
 #include "Twizy_TFT_defs_types.h"
@@ -57,16 +56,13 @@
 // draw update (555ms), try using a non-devider of CAN frame cycle times -> otherwise could end up in regularly missing certain frames.
 #define TFT_UPDATE_US        555000
 
-byte tftClockRang = true;
+byte tftClockRang = false;
 char fpsStr[4];
 
 #define SHOW_MS_PER_FRAME //adds a last line on the display showing a frame update time in ms
 
 
 MCUFRIEND_kbv tft;
-//#include <Adafruit_TFTLCD.h>
-//Adafruit_TFTLCD tft(LCD_CS, LCD_CD, LCD_WR, LCD_RD, LCD_RESET);
-
 
 //#define CAN0_INT 2                              // Set INT to pin 2
 MCP_CAN CAN_Instance(10);                       // Set CS to pin 10
@@ -158,7 +154,7 @@ void checkTftRedraws(void)
   
 void setup()
 {
-  Serial.begin(9600);
+  Serial.begin(115200);
   
   // Initialize MCP2515 running at 16MHz with a baudrate of 500kb/s and the masks and filters disabled.
   if(CAN_Instance.begin(MCP_ANY, CAN_500KBPS, MCP_16MHZ) == CAN_OK)
@@ -172,13 +168,14 @@ void setup()
 
 
   /************** TFT stuff *************/
-  //Timer1.initialize(TFT_UPDATE_US);
-  //Timer1.attachInterrupt(tftClockISR);
-Timer1.attachInterrupt(tftClockISR);
+  Timer1.initialize(TFT_UPDATE_US);
+  Timer1.attachInterrupt(tftClockISR);
   uint16_t ID = tft.readID(); 
+  Serial.print("found display ID 0x"); Serial.print(ID, HEX);   
+
   tft.begin(ID);
-  //tft.invertDisplay(true); this is pixel base
   tft.setRotation(2); //0-3
+  Serial.print("  height "); Serial.print(tft.height()); Serial.print("  width "); Serial.println(tft.width());
   tft.fillScreen(BLACK);
   tft.setCustomFontToGrid(true); //this function will only be found in the CanDisplay version of adafruit gfx lib
 
@@ -190,8 +187,24 @@ Timer1.attachInterrupt(tftClockISR);
   dataOnDis.tInv.value = -40;
   dataOnDis.tMot.value = -40;
   dataOnDis.iCurr.value = 500;
- 
-  drawStatics();
+
+#ifdef SHOW_MS_PER_FRAME
+  {
+    unsigned long tstart, tend;
+    char msgString[40];                        // Array to store serial string
+    tstart = millis();
+#endif
+
+    drawStatics();
+  
+#ifdef SHOW_MS_PER_FRAME
+    tend = millis();
+    tft.setFont(NULL);
+    tft.setCursor( SetRel2AbsWidth(4), SetRel2AbsHeigth(95));
+    sprintf(&msgString[0], " took:%4ums_", tend - tstart);
+    printmsgBW( msgString, WHITE );
+  }
+#endif
 }
 
 void loop()
@@ -255,25 +268,6 @@ void loop()
       id55F.isNew = true;
     }
   }
-
-//  if (id155.isNew != true) {
-//  ((byte*)(&id155.data))[1]= 0x97; //07 97 D0 54 41 A0 00 73
-//  ((byte*)(&id155.data))[2]= 0xD0; 
-//  ((byte*)(&id155.data))[3]= 0x54; 
-//  ((byte*)(&id155.data))[4]= 0x41; 
-//  ((byte*)(&id155.data))[5]= 0xA0; 
-//  id155.isNew = true;}
-//  if (id425.isNew != true) {
-//  ((byte*)(&id425.data))[4]= 0xFE; //2A 3C 44 FF FE 70 01 07
-//  ((byte*)(&id425.data))[5]= 0x70; 
-//  ((byte*)(&id425.data))[6]= 0x01; 
-//  ((byte*)(&id425.data))[7]= 0x07; 
-//  id425.isNew = true; }
-//
-//  if (id55F.isNew != true) {
-//  ((byte*)(&id55F.data))[6]= 0x12; //FF FF 73 00 00 24 12 41
-//  ((byte*)(&id55F.data))[7]= 0x41; 
-//  id55F.isNew = true; }
     
   if(tftClockRang)
   { 
