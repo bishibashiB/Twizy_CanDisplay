@@ -30,4 +30,6 @@ Printing (or building) a casing for this CAN display is planed. You have an STL 
 mediate level: checkout yourself options for bigger TFT (up to 3.5" on _AVR_ or going to where the music plays: who is the first for esp8266/32? - but that is like an OVMS display isn't it :D )
 
 And here we go for another posibility for improvements.
-[![Feature Requests](http://feathub.com/Jekyll555/Twizy_CanDisplay?format=svg)](http://feathub.com/Jekyll555/Twizy_CanDisplay)
+
+[Feature Requests](http://feathub.com/Jekyll555/Twizy_CanDisplay)
+
